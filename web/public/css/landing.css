@@ -1,0 +1,79 @@
+body {
+  background-color: #252532;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  color: #FFF;
+}
+
+h1 {
+  font-family: 'Open Sans', sans-serif;
+  color: #FFF;
+}
+
+a {
+  font-family: 'Open Sans', sans-serif;
+  text-decoration: none;
+  color: #99AAB5;
+}
+
+.icon {
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+
+.logo {
+  vertical-align: middle;
+  width: 200px;
+  height: 68px;
+}
+
+#serverlist {
+  display: inline-block;
+  background-color: #7299DF;
+  padding: 0.5em 0.2em 0.8em 0.5em;
+}
+
+/* https://davidwalsh.name/css-flip */
+.flip-container {
+  perspective: 1000px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flip-container:hover .flipper, .flip-container.hover .flipper {
+  transform: rotateY(180deg);
+}
+
+.flip-container, .front, .back {
+  width: 512px;
+  height: 64px;
+}
+
+.flipper {
+  transition: 0.5s;
+  transform-style: preserve-3d;
+
+  position: relative;
+}
+
+.front, .back {
+  backface-visibility: hidden;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+}

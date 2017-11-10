@@ -3,6 +3,8 @@ const session = require("express-session");
 const cookie = require("cookie-parser");
 const ejs = require("ejs");
 
+const path = require("path");
+
 const mongoose = require("mongoose");
 const mongooseSession = require("connect-mongo")(session);
 
@@ -24,6 +26,8 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "ejs");
 
 app.use(cookie());
+
+app.use(express.static(path.join(__dirname, "public")));
 
 const scopes = ["identify", "email", "guilds"];
 
@@ -103,7 +107,8 @@ module.exports = (bot) => {
       authUser: req.isAuthenticated() ? getAuthUser(req.user) : null,
       bot,
       getGuildInfo,
-      botInGuild
+      botInGuild,
+      inviteLink: `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`
     });
   });
 
