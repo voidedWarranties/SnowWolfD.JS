@@ -8,6 +8,7 @@ const invert = require("invert-color");
 const request = require("request").defaults({encoding: null});
 
 const Canvas = require("canvas-prebuilt");
+const gif = require("gifencoder");
 
 const path = require("path");
 
@@ -32,6 +33,13 @@ module.exports = class ProfileCommand extends commando.Command {
   }
 
   async run(msg, args) {
+    // GIF Encoder
+    var encoder = new gif(700, 300);
+    encoder.start();
+    encoder.setRepeat(0);
+    encoder.setDelay(1000);
+    encoder.setQuality(10);
+    //
 
     var Image = Canvas.Image
     , canvas = new Canvas(700, 300)
@@ -58,7 +66,8 @@ module.exports = class ProfileCommand extends commando.Command {
     }
 
     var profilePicture = new Image;
-    request.get(user.avatarURL, (error, res, body) => {
+
+    request.get(user.displayAvatarURL, (error, res, body) => {
       profilePicture.src = res.body
     });
 
@@ -82,7 +91,23 @@ module.exports = class ProfileCommand extends commando.Command {
       ctx.fillText(`ID: ${user.id}`, 36, 128);
       ctx.fillText(`Created: ${new Date(user.createdTimestamp).getMonth()}/${new Date(user.createdTimestamp).getDate()}/${new Date(user.createdTimestamp).getFullYear()}`, 36, 164);
       ctx.fillText(`Joined: ${new Date(member.joinedTimestamp).getMonth()}/${new Date(member.joinedTimestamp).getDate()}/${new Date(member.joinedTimestamp).getFullYear()}`, 404, 164);
-      msg.channel.send("", {files:[{attachment:canvas.toBuffer(), name:"profile.png"}]});
+
+      encoder.addFrame(ctx);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillText(`Bot: ${user.bot}`, 32, 32);
+      ctx.fillStyle  = member.highestRole.hexColor;
+      ctx.fillText(`Highest Role: ${member.highestRole.name}`, 32, 68);
+      ctx.fillStyle = "black";
+      ctx.fillText(`Last Message at: ${user.bot ? "User is a bot" : user.lastMessage.createdAt}`, 32, 104)
+      encoder.addFrame(ctx);
+
+      encoder.finish();
+      // msg.channel.send("", {files:[{attachment:canvas.toBuffer(), name:"profile.png"}]});
+      msg.channel.send("", {files:[{attachment:encoder.out.getData(), name:"profile.gif"}]});
     }
   }
 }
