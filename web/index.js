@@ -84,13 +84,7 @@ module.exports = (bot) => {
     secret: "cIGxEWj4PwbnasdurJzS",
     resave: false,
     saveUninitialized: false,
-    store,
-    cookie: {
-      httpOnly: true,
-      sameSite: true,
-      secure: "auto",
-      maxAge: 2592000000
-    }
+    store
   }));
 
   app.use(passport.initialize());
