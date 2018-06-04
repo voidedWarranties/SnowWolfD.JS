@@ -37,8 +37,8 @@ module.exports = class ProfileCommand extends commando.Command {
     var encoder = new gif(700, 300);
     encoder.start();
     encoder.setRepeat(0);
-    encoder.setDelay(1000);
-    encoder.setQuality(10);
+    encoder.setDelay(2500);
+    encoder.setQuality(1);
     //
 
     var Image = Canvas.Image
@@ -76,21 +76,11 @@ module.exports = class ProfileCommand extends commando.Command {
       ctx.drawImage(profilePicture, 32, 32, 64, 64);
       // Use `member.displayName` for displaying the display name (obviously)
       ctx.fillText(`${user.username}#${user.discriminator}`, 104, 64);
-      // A thing of the past
-      // ctx.fillText(`User: ${user.username}`, 32, 128);
-      // ctx.fillText(`Discriminator: ${user.discriminator}`, 32, 164);
-
-      // Other stuff of the past
-      // ctx.fillText("[placeholder]", 32, 128);
-      // ctx.fillText("[placeholder]", 32, 164);
-      // ctx.fillText(`ID: ${user.id}`, 32, 200);
-      // ctx.fillText(`Created: ${new Date(user.createdTimestamp).getMonth()}/${new Date(user.createdTimestamp).getDate()}/${new Date(user.createdTimestamp).getFullYear()}`, 32, 236);
-      // ctx.fillText(`Joined: ${new Date(member.joinedTimestamp).getMonth()}/${new Date(member.joinedTimestamp).getDate()}/${new Date(member.joinedTimestamp).getFullYear()}`, 400, 236);
 
       ctx.fillStyle = invert(member.displayHexColor, true);
       ctx.fillText(`ID: ${user.id}`, 36, 128);
-      ctx.fillText(`Created: ${new Date(user.createdTimestamp).getMonth()}/${new Date(user.createdTimestamp).getDate()}/${new Date(user.createdTimestamp).getFullYear()}`, 36, 164);
-      ctx.fillText(`Joined: ${new Date(member.joinedTimestamp).getMonth()}/${new Date(member.joinedTimestamp).getDate()}/${new Date(member.joinedTimestamp).getFullYear()}`, 404, 164);
+      ctx.fillText(`Created: ${new Date(user.createdTimestamp).getMonth() + 1}/${new Date(user.createdTimestamp).getDate()}/${new Date(user.createdTimestamp).getFullYear()}`, 36, 164);
+      ctx.fillText(`Joined: ${new Date(member.joinedTimestamp).getMonth() + 1}/${new Date(member.joinedTimestamp).getDate()}/${new Date(member.joinedTimestamp).getFullYear()}`, 404, 164);
 
       encoder.addFrame(ctx);
 
@@ -102,7 +92,8 @@ module.exports = class ProfileCommand extends commando.Command {
       ctx.fillStyle  = member.highestRole.hexColor;
       ctx.fillText(`Highest Role: ${member.highestRole.name}`, 32, 68);
       ctx.fillStyle = "black";
-      ctx.fillText(`Last Message at: ${user.bot ? "User is a bot" : user.lastMessage.createdAt}`, 32, 104)
+      ctx.fillText(`Color Role: ${member.colorRole.name}`, 32, 104);
+
       encoder.addFrame(ctx);
 
       encoder.finish();
